@@ -12,18 +12,19 @@ totalWorkingDays=0
 totalEmpHrs=0
 
 function getWorkingHrs() {
-    case $1 in
-      $IS_FULLTIME)
+    local empCheck=$1
+    case $empCheck in
+        $IS_FULLTIME)
          empHrs=8
-      ;;
-      $IS_PARTTIME)
+         ;;
+         $IS_PARTTIME)
            empHrs=4
-      ;;
-      *)
-        empHrs=0
-      ;;
-   esac
-   echo $empHrs
+          ;;
+          *)
+          empHrs=0
+          ;;
+       esac
+       echo $empHrs
 }
 
 
@@ -33,8 +34,9 @@ do
    empcheck=$((RANDOM%3))
    empHrs=$( getWorkingHrs $empCheck )
    totalEmpHrs=$(($totalEmpHrs+$empHrs))
+   dailywage[$totalWorkingDays]=$( caldailywage $empHrs )
 
 done
 
 totalSalary=$(($totalEmpHrs*$EMP_RATE_PER_HR))
-echo $totalSalary
+echo "Daily Wage : " ${dailywage[@]}
